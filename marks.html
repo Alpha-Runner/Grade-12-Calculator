@@ -1,0 +1,261 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Grade 12th Examination Marks Calculator</title>
+  <style>
+    body {
+      font-family: 'Arial', sans-serif;
+      margin: 0;
+      padding: 0;
+      background-color: #0f3460;
+      color: #fff;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      height: 100vh;
+      overflow: hidden;
+    }
+    .container {
+      width: 80%;
+      max-width: 600px;
+      padding: 20px;
+      background-color: #162447;
+      border-radius: 10px;
+      text-align: center;
+      box-shadow: 0 0 20px rgba(0, 0, 0, 0.5);
+      display: none;
+      opacity: 0;
+      transition: opacity 0.5s ease;
+    }
+    .active {
+      display: block;
+      opacity: 1;
+    }
+    h1 {
+      font-size: 2em;
+      margin-bottom: 20px;
+    }
+    p {
+      margin-bottom: 20px;
+      font-size: 1.2em;
+    }
+    button {
+      background-color: #e43f5a;
+      color: #fff;
+      border: none;
+      padding: 15px 30px;
+      font-size: 1em;
+      border-radius: 5px;
+      cursor: pointer;
+      transition: background-color 0.3s ease, transform 0.3s ease;
+    }
+    button:hover {
+      background-color: #e84a5f;
+      transform: translateY(-5px);
+    }
+    input {
+      width: calc(100% - 40px);
+      margin-bottom: 15px;
+      padding: 10px;
+      font-size: 1em;
+      border: 2px solid #1f4068;
+      border-radius: 5px;
+      text-transform: uppercase;
+      background-color: #1b1b2f;
+      color: #fff;
+    }
+    .hidden {
+      display: none;
+    }
+    .subject-input {
+      width: calc(100% - 20px);
+      margin-bottom: 20px;
+      padding: 12px;
+      font-size: 1em;
+      border-radius: 5px;
+      background-color: #1b1b2f;
+      color: #fff;
+      border: 2px solid #1f4068;
+    }
+    #result p {
+      font-size: 1.2em;
+    }
+    /* Styling for the summary page */
+    #summary-section {
+      width: 100%;
+      max-width: 800px;
+      padding: 40px;
+      background-color: #162447;
+      border-radius: 10px;
+      box-shadow: 0 0 20px rgba(0, 0, 0, 0.5);
+      display: none;
+      opacity: 0;
+      transition: opacity 0.5s ease;
+    }
+    .biodata {
+      text-align: left;
+      font-size: 0.9em;
+      margin-bottom: 20px;
+    }
+    .summary-container {
+      display: flex;
+      justify-content: space-between;
+    }
+    .biodata, .marks-summary {
+      width: 48%;
+    }
+    .marks-summary {
+      text-align: left;
+    }
+    h2 {
+      font-size: 1.8em;
+      text-align: center;
+      margin-bottom: 20px;
+    }
+    .summary-line {
+      margin-bottom: 10px;
+      font-size: 1.1em;
+    }
+  </style>
+</head>
+<body>
+
+<!-- Welcome Section -->
+<div id="welcome-section" class="container active">
+  <h1>Welcome Grade 12th Students!</h1>
+  <p>Get ready to calculate your examination marks with ease. Simply follow the steps and fill in your details to get started. Let's ace those exams!</p>
+  <button onclick="showStudentInfo()">Get Started</button>
+</div>
+
+<!-- Student Information Section -->
+<div id="student-info-section" class="container">
+  <h1>Student Information</h1>
+  <form id="studentForm">
+    <input type="text" id="name" placeholder="Enter your name" required>
+    <input type="date" id="dob" placeholder="Enter your date of birth" required>
+    <input type="text" id="roll" placeholder="Enter your roll number" required>
+    <input type="text" id="division" placeholder="Enter your division" required>
+    <p>Please enter all information in CAPITAL LETTERS only.</p>
+    <button type="button" onclick="proceedToMarksCalculation()">Proceed to Calculation</button>
+  </form>
+</div>
+
+<!-- Marks Calculation Section -->
+<div id="marks-calculation-section" class="container">
+  <h1>Enter Your Marks</h1>
+  <div id="marks-calculation">
+    <input type="number" id="english" class="subject-input" placeholder="English (Marks out of 50)">
+    <input type="number" id="physics" class="subject-input" placeholder="Physics (Marks out of 50)">
+    <input type="number" id="maths" class="subject-input" placeholder="Maths (Marks out of 50)">
+    <input type="number" id="chemistry" class="subject-input" placeholder="Chemistry (Marks out of 50)">
+    <input type="number" id="biology" class="subject-input" placeholder="Biology (Optional, Marks out of 50)">
+    <input type="number" id="it" class="subject-input" placeholder="IT (Marks out of 50)">
+    <button type="button" onclick="calculateMarks()">Calculate</button>
+  </div>
+  <div id="result"></div>
+</div>
+
+<!-- Summary Section -->
+<div id="summary-section" class="container">
+  <h2>Summary</h2>
+  <div class="summary-container">
+    <!-- Student Biodata -->
+    <div class="biodata">
+      <p class="summary-line"><strong>Name:</strong> <span id="summary-name"></span></p>
+      <p class="summary-line"><strong>Date of Birth:</strong> <span id="summary-dob"></span></p>
+      <p class="summary-line"><strong>Roll Number:</strong> <span id="summary-roll"></span></p>
+      <p class="summary-line"><strong>Division:</strong> <span id="summary-division"></span></p>
+    </div>
+    
+    <!-- Marks Summary -->
+    <div class="marks-summary">
+      <p class="summary-line"><strong>English:</strong> <span id="summary-english"></span>/50</p>
+      <p class="summary-line"><strong>Physics:</strong> <span id="summary-physics"></span>/50</p>
+      <p class="summary-line"><strong>Maths:</strong> <span id="summary-maths"></span>/50</p>
+      <p class="summary-line"><strong>Chemistry:</strong> <span id="summary-chemistry"></span>/50</p>
+      <p class="summary-line"><strong>Biology:</strong> <span id="summary-biology"></span>/50</p>
+      <p class="summary-line"><strong>IT:</strong> <span id="summary-it"></span>/50</p>
+      <p class="summary-line"><strong>Total Marks:</strong> <span id="summary-total"></span>/300</p>
+      <p class="summary-line"><strong>Percentage:</strong> <span id="summary-percentage"></span>%</p>
+    </div>
+  </div>
+</div>
+
+<script>
+  function showStudentInfo() {
+    // Hide welcome section and show student info section with animation
+    document.getElementById('welcome-section').classList.remove('active');
+    setTimeout(() => {
+      document.getElementById('welcome-section').classList.add('hidden');
+      document.getElementById('student-info-section').classList.add('active');
+    }, 500);
+  }
+
+  function proceedToMarksCalculation() {
+    const form = document.getElementById('studentForm');
+    if (!form.checkValidity()) {
+      alert('Please fill out all required fields.');
+      return;
+    }
+
+    // Hide student info section and show marks calculation section with animation
+    document.getElementById('student-info-section').classList.remove('active');
+    setTimeout(() => {
+      document.getElementById('student-info-section').classList.add('hidden');
+      document.getElementById('marks-calculation-section').classList.add('active');
+    }, 500);
+  }
+
+  function calculateMarks() {
+    const english = parseFloat(document.getElementById('english').value) || 0;
+    const physics = parseFloat(document.getElementById('physics').value) || 0;
+    const maths = parseFloat(document.getElementById('maths').value) || 0;
+    const chemistry = parseFloat(document.getElementById('chemistry').value) || 0;
+    const biology = parseFloat(document.getElementById('biology').value) || 0;
+    const it = parseFloat(document.getElementById('it').value) || 0;
+
+    const totalMarks = english + physics + maths + chemistry + biology + it;
+    const percentage = (totalMarks / 300) * 100;
+
+    const resultDiv = document.getElementById('result');
+    resultDiv.innerHTML = `
+      <p>Total Marks: ${totalMarks}</p>
+      <p>Percentage: ${percentage.toFixed(2)}%</p>
+    `;
+
+    // Show the summary page after 10 seconds
+    setTimeout(() => {
+      showSummary(english, physics, maths, chemistry, biology, it, totalMarks, percentage);
+    }, 10000);
+  }
+
+  function showSummary(english, physics, maths, chemistry, biology, it, totalMarks, percentage) {
+    // Hide marks calculation section and show summary section with animation
+    document.getElementById('marks-calculation-section').classList.remove('active');
+    setTimeout(() => {
+      document.getElementById('marks-calculation-section').classList.add('hidden');
+      document.getElementById('summary-section').classList.add('active');
+    }, 500);
+
+    // Display the student's biodata
+    document.getElementById('summary-name').textContent = document.getElementById('name').value.toUpperCase();
+    document.getElementById('summary-dob').textContent = document.getElementById('dob').value;
+    document.getElementById('summary-roll').textContent = document.getElementById('roll').value.toUpperCase();
+    document.getElementById('summary-division').textContent = document.getElementById('division').value.toUpperCase();
+
+    // Display the marks summary
+    document.getElementById('summary-english').textContent = english;
+    document.getElementById('summary-physics').textContent = physics;
+    document.getElementById('summary-maths').textContent = maths;
+    document.getElementById('summary-chemistry').textContent = chemistry;
+    document.getElementById('summary-biology').textContent = biology;
+    document.getElementById('summary-it').textContent = it;
+    document.getElementById('summary-total').textContent = totalMarks;
+    document.getElementById('summary-percentage').textContent = percentage.toFixed(2);
+  }
+</script>
+
+</body>
+</html>
